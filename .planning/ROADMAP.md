@@ -21,7 +21,7 @@
   4. Server state is the source of truth if client LocalStorage drifts (SYNC-03).
 **Plans:** 1/2 plans executed
 - [x] 01-01-PLAN.md — Walking Skeleton (Express + Socket.io)
-- [ ] 01-02-PLAN.md — State Sync & Authority Handling
+- [x] 01-02-PLAN.md — State Sync & Authority Handling
 **UI hint**: yes
 
 ### Phase 2: Host Control Interface

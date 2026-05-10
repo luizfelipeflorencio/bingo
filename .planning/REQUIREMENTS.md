@@ -27,9 +27,9 @@ Requirements for initial release.
 
 ### Resilience & State
 
-- [ ] **SYNC-01**: New participants receive current game state immediately upon connection (replay).
+- [x] **SYNC-01**: New participants receive current game state immediately upon connection (replay).
 - [ ] **SYNC-02**: LocalStorage persists UI state across page refreshes for all clients.
-- [ ] **SYNC-03**: Server state unconditionally overwrites client cache on connection.
+- [x] **SYNC-03**: Server state unconditionally overwrites client cache on connection.
 
 ## v2 Requirements
 
@@ -68,9 +68,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DISP-02 | Phase 3 | Pending |
 | DISP-03 | Phase 3 | Pending |
 | DISP-04 | Phase 1 | Complete |
-| SYNC-01 | Phase 1 | Pending |
+| SYNC-01 | Phase 1 | Complete |
 | SYNC-02 | Phase 4 | Pending |
-| SYNC-03 | Phase 1 | Pending |
+| SYNC-03 | Phase 1 | Complete |
 
 **Coverage:**
 - v1 requirements: 12 total
