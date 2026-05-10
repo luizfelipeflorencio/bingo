@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: phase-complete
-last_updated: "2026-05-10T23:54:34.159Z"
+last_updated: "2026-05-10T23:54:50.537Z"
 progress:
   total_phases: 4
   completed_phases: 1
@@ -22,10 +22,10 @@ progress:
 ## Current Position
 
 **Phase**: Phase 2: Host Control Interface & Real-time Communication
-**Plan**: 00
-**Status**: Planning
+**Plan**: 01
+**Status**: In Progress
 
-[                    ] 0%
+[||||||||||          ] 50%
 
 ## Performance Metrics
 
@@ -33,6 +33,7 @@ progress:
 |-------|------|----------|-------|-------|------|
 | 01-foundation | 01 | 30m | 2 | 5 | 2026-05-10 |
 | 01-foundation | 02 | 15m | 2 | 2 | 2026-05-10 |
+| 02-host-control-interface | 01 | 4m | 2 | 4 | 2026-05-10 |
 
 - **Velocity**: 2 requirements/session
 - **Health**: Green
@@ -49,6 +50,9 @@ progress:
 - Implement visual status indicator for WebSocket connection state.
 - Server state is unconditionally authoritative over client LocalStorage.
 - SYNC protocol uses uppercase 'SYNC' event name for consistency with future protocols.
+- Use socket.handshake.auth.token for host secret delivery.
+- Store HOST_SECRET in .env for security.
+- Emit 'authorized' event from server to confirm host status.
 
 ### Todos
 
