@@ -11,6 +11,17 @@ const io = new Server(server, {
   pingTimeout: 5000,
 });
 
+io.use((socket, next) => {
+  const token = socket.handshake.auth.token;
+  if (token === process.env.HOST_SECRET) {
+    socket.isHost = true;
+    console.log(`Host authenticated: ${socket.id}`);
+  } else {
+    socket.isHost = false;
+  }
+  next();
+});
+
 const PORT = process.env.PORT || 3000;
 
 app.use(express.static(path.join(__dirname, 'public')));
@@ -36,6 +47,7 @@ io.on('connection', (socket) => {
   });
 });
 
+/*
 // Periodic heartbeat (PITFALL 7 - already handled by Socket.io's ping/pong)
 setInterval(() => {
   if (io.engine.clientsCount > 0) {
@@ -51,6 +63,7 @@ setInterval(() => {
     console.log(`[Simulation] Pushed ${randomNum} to ${io.engine.clientsCount} clients`);
   }
 }, 5000);
+*/
 
 server.listen(PORT, () => {
   console.log(`Bingo Server running on port ${PORT}`);
