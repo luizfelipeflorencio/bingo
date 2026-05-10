@@ -1,0 +1,48 @@
+require('dotenv').config();
+const express = require('express');
+const http = require('http');
+const { Server } = require('socket.io');
+const path = require('path');
+
+const app = express();
+const server = http.createServer(app);
+const io = new Server(server, {
+  pingInterval: 10000,
+  pingTimeout: 5000,
+});
+
+const PORT = process.env.PORT || 3000;
+
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Game state (in-memory)
+let gameState = {
+  drawnNumbers: [],
+  lastDrawn: null
+};
+
+io.on('connection', (socket) => {
+  console.log(`User connected: ${socket.id}`);
+
+  // Pitfall 1: Send state snapshot on connect
+  socket.emit('sync', gameState);
+
+  socket.on('disconnect', () => {
+    console.log(`User disconnected: ${socket.id}`);
+  });
+});
+
+// Periodic heartbeat (PITFALL 7 - already handled by Socket.io's ping/pong)
+// Adding a console log to server for verification as per task
+setInterval(() => {
+  if (io.engine.clientsCount > 0) {
+    const randomNum = Math.floor(Math.random() * 90) + 1;
+    // For verification in Task 2, we'll push this
+    // io.emit('numberDrawn', randomNum);
+    // console.log(`[Verification] Heartbeat: pushed ${randomNum} to ${io.engine.clientsCount} clients`);
+  }
+}, 5000);
+
+server.listen(PORT, () => {
+  console.log(`Bingo Server running on port ${PORT}`);
+});
