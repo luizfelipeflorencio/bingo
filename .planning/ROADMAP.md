@@ -17,7 +17,9 @@
 **Success Criteria** (what must be TRUE):
   1. User can access the root URL (`/`) and see a connected status.
   2. Server can push a test "number drawn" event and the participant screen updates instantly without refresh.
-**Plans**: TBD
+**Plans:** 2 plans
+- [ ] 01-01-PLAN.md — Walking Skeleton (Express + Socket.io)
+- [ ] 01-02-PLAN.md — State Sync & Authority Handling
 **UI hint**: yes
 
 ### Phase 2: Host Control Interface
