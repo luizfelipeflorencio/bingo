@@ -35,6 +35,9 @@ let gameState = {
 io.on('connection', (socket) => {
   console.log(`User connected: ${socket.id}`);
 
+  // Emit authorization status
+  socket.emit('authorized', { isHost: socket.isHost });
+
   // Pitfall 1: Send state snapshot on connect
   try {
     socket.emit('SYNC', gameState);

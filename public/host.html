@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bingo Live - Host Control</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <header>
+            <h1>Bingo Host Control</h1>
+            <div id="status-bar">
+                Status: <span id="status" class="connecting">Connecting...</span>
+                <span id="auth-status" class="unauthorized">Unauthorized</span>
+            </div>
+        </header>
+
+        <main>
+            <div id="host-controls">
+                <div id="auth-indicator">Checking authentication...</div>
+                <!-- Controls will be added in Plan 02-02 -->
+            </div>
+        </main>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="host.js"></script>
+</body>
+</html>
