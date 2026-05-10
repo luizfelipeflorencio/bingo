@@ -25,7 +25,11 @@ io.on('connection', (socket) => {
   console.log(`User connected: ${socket.id}`);
 
   // Pitfall 1: Send state snapshot on connect
-  socket.emit('sync', gameState);
+  try {
+    socket.emit('SYNC', gameState);
+  } catch (err) {
+    console.error('Failed to emit SYNC:', err);
+  }
 
   socket.on('disconnect', () => {
     console.log(`User disconnected: ${socket.id}`);
