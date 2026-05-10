@@ -2,7 +2,7 @@
 
 ## Phases
 
-- [ ] **Phase 1: Foundation & Real-time Communication** - Establish the basic server-client link for live updates.
+- [x] **Phase 1: Foundation & Real-time Communication** - Establish the basic server-client link for live updates.
 - [ ] **Phase 2: Host Control Interface** - Implement the host's ability to manage the game and push numbers.
 - [ ] **Phase 3: Visual Bingo Display** - Create the comprehensive display for participants with history and state replay.
 - [ ] **Phase 4: Resilience & UX Polish** - Ensure state persistence across refreshes and responsive design.
@@ -19,7 +19,7 @@
   2. Server can push a test "number drawn" event and the participant screen updates instantly without refresh.
   3. Late-joining clients receive the current game state on connection (SYNC-01).
   4. Server state is the source of truth if client LocalStorage drifts (SYNC-03).
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans executed
 - [x] 01-01-PLAN.md — Walking Skeleton (Express + Socket.io)
 - [x] 01-02-PLAN.md — State Sync & Authority Handling
 **UI hint**: yes
@@ -30,10 +30,13 @@
 **Depends on**: Phase 1
 **Requirements**: AUTH-01, HOST-01, HOST-02, HOST-03
 **Success Criteria** (what must be TRUE):
-  1. User can access `/host` and input numbers 1–90.
-  2. System rejects input if a number has already been drawn in the current round.
-  3. Host can click a "Reset" button which clears the game state on the server.
-**Plans**: TBD
+  1. Host connects to `/host` via secret URL key (AUTH-01).
+  2. Host registers numbers 1–90; server rejects invalid/duplicate numbers (HOST-01, HOST-02).
+  3. Host resets game state with confirmation; state clears for all clients (HOST-03).
+**Plans:** 2 plans
+Plans:
+- [ ] 02-01-PLAN.md — Host Authentication & Handshake Middleware
+- [ ] 02-02-PLAN.md — Host Number Pad & Game Reset Controls
 **UI hint**: yes
 
 ### Phase 3: Visual Bingo Display
@@ -63,7 +66,7 @@
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & Communication | 1/2 | In Progress|  |
-| 2. Host Control Interface | 0/0 | Not started | - |
+| 1. Foundation & Communication | 2/2 | Completed| 2026-05-10 |
+| 2. Host Control Interface | 0/2 | Not started | - |
 | 3. Visual Bingo Display | 0/0 | Not started | - |
 | 4. Resilience & UX Polish | 0/0 | Not started | - |
