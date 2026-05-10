@@ -48,6 +48,30 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     console.log(`User disconnected: ${socket.id}`);
   });
+
+  socket.on('drawNumber', (n) => {
+    if (!socket.isHost) return;
+
+    const num = parseInt(n);
+    if (isNaN(num) || num < 1 || num > 90) return;
+    if (gameState.drawnNumbers.includes(num)) return;
+
+    gameState.drawnNumbers.push(num);
+    gameState.lastDrawn = num;
+    io.emit('numberDrawn', num);
+    console.log(`Host ${socket.id} drew number: ${num}`);
+  });
+
+  socket.on('resetGame', () => {
+    if (!socket.isHost) return;
+
+    gameState = {
+      drawnNumbers: [],
+      lastDrawn: null
+    };
+    io.emit('SYNC', gameState);
+    console.log(`Host ${socket.id} reset the game`);
+  });
 });
 
 /*
