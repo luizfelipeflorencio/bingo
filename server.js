@@ -33,13 +33,18 @@ io.on('connection', (socket) => {
 });
 
 // Periodic heartbeat (PITFALL 7 - already handled by Socket.io's ping/pong)
-// Adding a console log to server for verification as per task
 setInterval(() => {
   if (io.engine.clientsCount > 0) {
     const randomNum = Math.floor(Math.random() * 90) + 1;
-    // For verification in Task 2, we'll push this
-    // io.emit('numberDrawn', randomNum);
-    // console.log(`[Verification] Heartbeat: pushed ${randomNum} to ${io.engine.clientsCount} clients`);
+
+    // Update state
+    gameState.lastDrawn = randomNum;
+    if (!gameState.drawnNumbers.includes(randomNum)) {
+      gameState.drawnNumbers.push(randomNum);
+    }
+
+    io.emit('numberDrawn', randomNum);
+    console.log(`[Simulation] Pushed ${randomNum} to ${io.engine.clientsCount} clients`);
   }
 }, 5000);
 
