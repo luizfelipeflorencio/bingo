@@ -13,12 +13,14 @@
 **Goal**: Establish the basic server-client link for live updates.
 **Mode:** mvp
 **Depends on**: Nothing
-**Requirements**: AUTH-02, DISP-04
+**Requirements**: AUTH-02, DISP-04, SYNC-01, SYNC-03
 **Success Criteria** (what must be TRUE):
   1. User can access the root URL (`/`) and see a connected status.
   2. Server can push a test "number drawn" event and the participant screen updates instantly without refresh.
-**Plans:** 2 plans
-- [ ] 01-01-PLAN.md — Walking Skeleton (Express + Socket.io)
+  3. Late-joining clients receive the current game state on connection (SYNC-01).
+  4. Server state is the source of truth if client LocalStorage drifts (SYNC-03).
+**Plans:** 1/2 plans executed
+- [x] 01-01-PLAN.md — Walking Skeleton (Express + Socket.io)
 - [ ] 01-02-PLAN.md — State Sync & Authority Handling
 **UI hint**: yes
 
@@ -38,12 +40,11 @@
 **Goal**: Create the comprehensive display for participants with history and state replay.
 **Mode:** mvp
 **Depends on**: Phase 2
-**Requirements**: DISP-01, DISP-02, DISP-03, SYNC-01
+**Requirements**: DISP-01, DISP-02, DISP-03
 **Success Criteria** (what must be TRUE):
   1. Participant screen shows the most recent number in a prominent large display.
   2. A 1–90 grid highlights all numbers called so far.
   3. A history bar shows the last 5 numbers called in order.
-  4. A user joining mid-game instantly sees the current state of the board.
 **Plans**: TBD
 **UI hint**: yes
 
@@ -51,11 +52,10 @@
 **Goal**: Ensure state persistence across refreshes and responsive design.
 **Mode:** mvp
 **Depends on**: Phase 3
-**Requirements**: SYNC-02, SYNC-03
+**Requirements**: SYNC-02
 **Success Criteria** (what must be TRUE):
-  1. Refreshing the browser page does not lose the current highlights on the Bingo grid.
+  1. Refreshing the browser page does not lose the current highlights on the Bingo grid via LocalStorage cache.
   2. The UI is fully usable on a mobile phone in portrait and landscape orientation.
-  3. Server state is the source of truth if client LocalStorage drifts.
 **Plans**: TBD
 **UI hint**: yes
 
@@ -63,7 +63,7 @@
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & Communication | 0/0 | Not started | - |
+| 1. Foundation & Communication | 1/2 | In Progress|  |
 | 2. Host Control Interface | 0/0 | Not started | - |
 | 3. Visual Bingo Display | 0/0 | Not started | - |
 | 4. Resilience & UX Polish | 0/0 | Not started | - |

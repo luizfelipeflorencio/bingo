@@ -10,7 +10,7 @@ Requirements for initial release.
 ### Authentication & Access
 
 - [ ] **AUTH-01**: Host access via dedicated `/host` URL with token-based WebSocket validation.
-- [ ] **AUTH-02**: Participant access via public `/` or `/view` URL (read-only).
+- [x] **AUTH-02**: Participant access via public `/` or `/view` URL (read-only).
 
 ### Game Logic & Input (Host)
 
@@ -23,7 +23,7 @@ Requirements for initial release.
 - [ ] **DISP-01**: Most recently drawn number displayed prominently in a large format.
 - [ ] **DISP-02**: Grid of numbers 1–90 showing all previously called numbers highlighted.
 - [ ] **DISP-03**: Recent call history strip (last 5 numbers).
-- [ ] **DISP-04**: Real-time updates via Socket.io (no page refresh).
+- [x] **DISP-04**: Real-time updates via Socket.io (no page refresh).
 
 ### Resilience & State
 
@@ -60,17 +60,17 @@ Which phases cover which requirements. Updated during roadmap creation.
 | Requirement | Phase | Status |
 |-------------|-------|--------|
 | AUTH-01 | Phase 2 | Pending |
-| AUTH-02 | Phase 1 | Pending |
+| AUTH-02 | Phase 1 | Complete |
 | HOST-01 | Phase 2 | Pending |
 | HOST-02 | Phase 2 | Pending |
 | HOST-03 | Phase 2 | Pending |
 | DISP-01 | Phase 3 | Pending |
 | DISP-02 | Phase 3 | Pending |
 | DISP-03 | Phase 3 | Pending |
-| DISP-04 | Phase 1 | Pending |
-| SYNC-01 | Phase 3 | Pending |
+| DISP-04 | Phase 1 | Complete |
+| SYNC-01 | Phase 1 | Pending |
 | SYNC-02 | Phase 4 | Pending |
-| SYNC-03 | Phase 4 | Pending |
+| SYNC-03 | Phase 1 | Pending |
 
 **Coverage:**
 - v1 requirements: 12 total
