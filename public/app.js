@@ -15,6 +15,25 @@ function updateStatus(state) {
     statusEl.className = state.toLowerCase().split(' ')[0];
 }
 
+// LocalStorage Persistence
+const STORAGE_KEY = 'bingo_game_state';
+
+function saveToLocal(state) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+function loadFromLocal() {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    return saved ? JSON.parse(saved) : null;
+}
+
+// Initial hydration (Optimistic UX)
+const localState = loadFromLocal();
+if (localState) {
+    console.log('Hydrating from LocalStorage:', localState);
+    renderState(localState);
+}
+
 socket.on('connect', () => {
     console.log('Connected to server');
     updateStatus('Connected');
@@ -30,9 +49,10 @@ socket.on('connect_error', () => {
 });
 
 // Pitfall 1 & 2: SYNC handle
-socket.on('sync', (state) => {
-    console.log('Received SYNC:', state);
+socket.on('SYNC', (state) => {
+    console.log('Received SYNC (Server Authority):', state);
     renderState(state);
+    saveToLocal(state); // Unconditionally overwrite local cache
 });
 
 // Real-time updates
@@ -44,6 +64,14 @@ socket.on('numberDrawn', (number) => {
     const history = Array.from(document.querySelectorAll('.history-number')).map(el => parseInt(el.textContent));
     if (!history.includes(number)) {
         addNumberToHistory(number);
+
+        // Update local cache
+        const currentState = loadFromLocal() || { drawnNumbers: [], lastDrawn: null };
+        currentState.lastDrawn = number;
+        if (!currentState.drawnNumbers.includes(number)) {
+            currentState.drawnNumbers.push(number);
+        }
+        saveToLocal(currentState);
     }
 });
 
