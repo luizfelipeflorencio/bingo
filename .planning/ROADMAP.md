@@ -3,7 +3,7 @@
 ## Phases
 
 - [x] **Phase 1: Foundation & Real-time Communication** - Establish the basic server-client link for live updates.
-- [ ] **Phase 2: Host Control Interface** - Implement the host's ability to manage the game and push numbers.
+- [x] **Phase 2: Host Control Interface** - Implement the host's ability to manage the game and push numbers. (completed 2026-05-10)
 - [ ] **Phase 3: Visual Bingo Display** - Create the comprehensive display for participants with history and state replay.
 - [ ] **Phase 4: Resilience & UX Polish** - Ensure state persistence across refreshes and responsive design.
 
@@ -33,10 +33,10 @@
   1. Host connects to `/host` via secret URL key (AUTH-01).
   2. Host registers numbers 1–90; server rejects invalid/duplicate numbers (HOST-01, HOST-02).
   3. Host resets game state with confirmation; state clears for all clients (HOST-03).
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans complete
 Plans:
 - [x] 02-01-PLAN.md — Host Authentication & Handshake Middleware
-- [ ] 02-02-PLAN.md — Host Number Pad & Game Reset Controls
+- [x] 02-02-PLAN.md — Host Number Pad & Game Reset Controls
 **UI hint**: yes
 
 ### Phase 3: Visual Bingo Display
@@ -67,6 +67,6 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation & Communication | 2/2 | Completed| 2026-05-10 |
-| 2. Host Control Interface | 1/2 | In Progress|  |
+| 2. Host Control Interface | 2/2 | Complete   | 2026-05-10 |
 | 3. Visual Bingo Display | 0/0 | Not started | - |
 | 4. Resilience & UX Polish | 0/0 | Not started | - |

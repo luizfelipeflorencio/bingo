@@ -14,9 +14,9 @@ Requirements for initial release.
 
 ### Game Logic & Input (Host)
 
-- [ ] **HOST-01**: Host can register drawn numbers (1–90) via a simple number pad/input.
-- [ ] **HOST-02**: System prevents duplicate numbers or invalid ranges (correctness).
-- [ ] **HOST-03**: Host can reset the current game state to start a new round.
+- [x] **HOST-01**: Host can register drawn numbers (1–90) via a simple number pad/input.
+- [x] **HOST-02**: System prevents duplicate numbers or invalid ranges (correctness).
+- [x] **HOST-03**: Host can reset the current game state to start a new round.
 
 ### Live Display (Participants)
 
@@ -61,9 +61,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 |-------------|-------|--------|
 | AUTH-01 | Phase 2 | Complete |
 | AUTH-02 | Phase 1 | Complete |
-| HOST-01 | Phase 2 | Pending |
-| HOST-02 | Phase 2 | Pending |
-| HOST-03 | Phase 2 | Pending |
+| HOST-01 | Phase 2 | Complete |
+| HOST-02 | Phase 2 | Complete |
+| HOST-03 | Phase 2 | Complete |
 | DISP-01 | Phase 3 | Pending |
 | DISP-02 | Phase 3 | Pending |
 | DISP-03 | Phase 3 | Pending |
