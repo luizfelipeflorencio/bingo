@@ -33,9 +33,9 @@
   1. Host connects to `/host` via secret URL key (AUTH-01).
   2. Host registers numbers 1–90; server rejects invalid/duplicate numbers (HOST-01, HOST-02).
   3. Host resets game state with confirmation; state clears for all clients (HOST-03).
-**Plans:** 2 plans
+**Plans:** 1/2 plans executed
 Plans:
-- [ ] 02-01-PLAN.md — Host Authentication & Handshake Middleware
+- [x] 02-01-PLAN.md — Host Authentication & Handshake Middleware
 - [ ] 02-02-PLAN.md — Host Number Pad & Game Reset Controls
 **UI hint**: yes
 
@@ -67,6 +67,6 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation & Communication | 2/2 | Completed| 2026-05-10 |
-| 2. Host Control Interface | 0/2 | Not started | - |
+| 2. Host Control Interface | 1/2 | In Progress|  |
 | 3. Visual Bingo Display | 0/0 | Not started | - |
 | 4. Resilience & UX Polish | 0/0 | Not started | - |

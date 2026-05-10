@@ -9,7 +9,7 @@ Requirements for initial release.
 
 ### Authentication & Access
 
-- [ ] **AUTH-01**: Host access via dedicated `/host` URL with token-based WebSocket validation.
+- [x] **AUTH-01**: Host access via dedicated `/host` URL with token-based WebSocket validation.
 - [x] **AUTH-02**: Participant access via public `/` or `/view` URL (read-only).
 
 ### Game Logic & Input (Host)
@@ -59,7 +59,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| AUTH-01 | Phase 2 | Pending |
+| AUTH-01 | Phase 2 | Complete |
 | AUTH-02 | Phase 1 | Complete |
 | HOST-01 | Phase 2 | Pending |
 | HOST-02 | Phase 2 | Pending |
