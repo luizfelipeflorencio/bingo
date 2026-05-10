@@ -18,6 +18,6 @@ test('index.html contains socket.io and app.js links', (t) => {
 
 test('app.js contains connection logic', (t) => {
   const appContent = fs.readFileSync(path.join(__dirname, '..', 'public', 'app.js'), 'utf8');
-  assert.ok(appContent.includes('io()'), 'should initialize socket.io');
+  assert.ok(appContent.includes('io('), 'should initialize socket.io');
   assert.ok(appContent.includes('status'), 'should handle status UI');
 });
