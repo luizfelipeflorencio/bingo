@@ -10,6 +10,29 @@ const socket = io({
 const statusEl = document.getElementById('status');
 const authStatusEl = document.getElementById('auth-status');
 const authIndicatorEl = document.getElementById('auth-indicator');
+const gameControlsEl = document.getElementById('game-controls');
+const numberPadEl = document.getElementById('number-pad');
+const resetBtn = document.getElementById('reset-btn');
+
+// Generate number pad
+for (let i = 1; i <= 90; i++) {
+    const btn = document.createElement('button');
+    btn.className = 'num-btn';
+    btn.id = `num-${i}`;
+    btn.textContent = i;
+    btn.onclick = () => {
+        if (!btn.classList.contains('drawn')) {
+            socket.emit('drawNumber', i);
+        }
+    };
+    numberPadEl.appendChild(btn);
+}
+
+resetBtn.onclick = () => {
+    if (window.confirm('Are you sure you want to reset the game? This will clear all drawn numbers for everyone.')) {
+        socket.emit('resetGame');
+    }
+};
 
 socket.on('connect', () => {
     console.log('Connected to server');
@@ -38,10 +61,33 @@ socket.on('authorized', (data) => {
     if (data.isHost) {
         authStatusEl.textContent = 'Authenticated as Host';
         authStatusEl.className = 'authorized';
-        authIndicatorEl.textContent = 'Host Access Granted';
+        authIndicatorEl.classList.add('hidden');
+        gameControlsEl.classList.remove('hidden');
     } else {
         authStatusEl.textContent = 'Unauthorized';
         authStatusEl.className = 'unauthorized';
         authIndicatorEl.textContent = 'Unauthorized: Invalid Key';
+        gameControlsEl.classList.add('hidden');
     }
 });
+
+socket.on('SYNC', (state) => {
+    updateGrid(state.drawnNumbers);
+});
+
+socket.on('numberDrawn', (num) => {
+    const btn = document.getElementById(`num-${num}`);
+    if (btn) btn.classList.add('drawn');
+});
+
+function updateGrid(drawnNumbers) {
+    // Clear all drawn states
+    document.querySelectorAll('.num-btn').forEach(btn => {
+        btn.classList.remove('drawn');
+    });
+    // Set new drawn states
+    drawnNumbers.forEach(num => {
+        const btn = document.getElementById(`num-${num}`);
+        if (btn) btn.classList.add('drawn');
+    });
+}

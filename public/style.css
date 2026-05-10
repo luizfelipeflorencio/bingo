@@ -13,20 +13,84 @@ body {
     padding: 2rem;
     border-radius: 12px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    width: 100%;
-    max-width: 400px;
+    width: 95%;
+    max-width: 800px;
     text-align: center;
 }
 
 #status-bar {
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     font-size: 0.9rem;
     color: #666;
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
 }
 
 #status.connected { color: #28a745; font-weight: bold; }
 #status.connecting { color: #ffc107; }
 #status.disconnected { color: #dc3545; }
+
+.hidden { display: none !important; }
+
+.number-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(45px, 1fr));
+    gap: 8px;
+    margin-top: 2rem;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 12px;
+}
+
+.num-btn {
+    aspect-ratio: 1;
+    border: 2px solid #dee2e6;
+    background: white;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.num-btn:hover {
+    border-color: #007bff;
+    color: #007bff;
+}
+
+.num-btn.drawn {
+    background: #007bff;
+    color: white;
+    border-color: #0056b3;
+    cursor: default;
+}
+
+.danger-btn {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 1rem;
+}
+
+.danger-btn:hover {
+    background: #bd2130;
+}
+
+@media (max-width: 480px) {
+    #app { padding: 1rem; }
+    .number-grid { grid-template-columns: repeat(auto-fill, minmax(35px, 1fr)); gap: 4px; }
+    .num-btn { font-size: 0.9rem; }
+}
 
 #current-number {
     font-size: 5rem;
