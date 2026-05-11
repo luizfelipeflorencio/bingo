@@ -78,7 +78,7 @@ Este painel mostra a bola atual em destaque, o histórico das últimas bolas e u
 │   ├── app.js       # Lógica do Participante
 │   ├── host.js      # Lógica do Host
 │   └── style.css    # Estilização Global
-├── server.js        # Servidor Express + Socket.io
+├── index.js         # Servidor Express + Socket.io
 ├── gameState.json   # Estado persistido (gerado automaticamente)
 └── package.json     # Dependências e Scripts
 ```
