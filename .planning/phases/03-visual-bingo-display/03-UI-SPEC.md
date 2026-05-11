@@ -33,13 +33,11 @@ Declared values (8-point scale base):
 |-------|-------|-------|
 | xs | 4px | Inline padding, minor offsets |
 | sm | 8px | Grid gap (min), element spacing |
-| md | 12px | Grid gap (max), component padding |
-| lg | 16px | Section padding, container gaps |
-| xl | 24px | Layout margins |
+| md | 16px | Grid gap (max), component padding |
+| lg | 24px | Section padding, container gaps |
+| xl | 32px | Layout margins |
 | 2xl | 48px | Stage vertical padding |
 | 3xl | 64px | Page-level breathing room |
-
-Exceptions: 12px for fluid grid gap per user request.
 
 ---
 
@@ -48,11 +46,11 @@ Exceptions: 12px for fluid grid gap per user request.
 | Role | Size | Weight | Line Height |
 |------|------|--------|-------------|
 | Body | 16px | 400 | 1.5 |
-| Label | 14px | 600 | 1.2 |
-| Heading | 24px | 600 | 1.2 |
+| Label | 14px | 900 | 1.2 |
+| Heading | 24px | 900 | 1.2 |
 | Display | 25vh | 900 | 1.0 |
 
-**Font Family:** 'Montserrat', sans-serif (Heavyweight variant for Display).
+**Font Family:** 'Montserrat', sans-serif (Heavyweight variant for Display, Heading, and Labels).
 
 ---
 
@@ -76,18 +74,30 @@ Exceptions: 12px for fluid grid gap per user request.
 ## Visual & Interaction Contracts
 
 ### 1. The Stage (Current Number)
+*Primary Focal Point / Visual Anchor*
 - **Geometry:** Circle or Polygon (Bingo Ball).
 - **Animation:** 
   - Exit: Previous number translates Y -100% (fade out).
   - Entrance: New number translates Y +100% to 0% with `cubic-bezier(0.34, 1.56, 0.64, 1)` (bounce).
 - **Effects:** Gold/Neon Pink gradient with `box-shadow: 0 0 40px rgba(251, 191, 36, 0.5)`.
 
-### 2. The Grid (1-90)
+### 2. The History Strip (Latest 5 Numbers)
+- **Placement:** Horizontal bar positioned between The Stage and The Grid.
+- **Geometry:** Row of 5 smaller circular items (approx 64px diameter).
+- **Visuals:** Glassmorphism style (Secondary color) with white/light-gray text. The "most recent" in the strip (rightmost) has a subtle gold border.
+- **Interaction:**
+  - When a new number is drawn: 
+    - The previous current number moves into the history strip.
+    - New items enter from the right (X +50% fade in).
+    - Existing items shift left.
+    - The 6th item (leftmost) translates left and fades out.
+
+### 3. The Grid (1-90)
 - **Style:** Glassmorphism (`backdrop-filter: blur(10px)`).
 - **State - Uncalled:** Opacity 40%, border-radius 8px.
 - **State - Called:** High contrast (Gold accent), 100% opacity, glow effect.
 
-### 3. Connection Status
+### 4. Connection Status
 - **Indicator:** Badge in header.
 - **Animation:** Green dot with infinite scale-up pulse (`@keyframes pulse`).
 

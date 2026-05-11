@@ -84,7 +84,11 @@ io.on('connection', (socket) => {
     gameState.drawnNumbers.push(num);
     gameState.lastDrawn = num;
     io.emit('numberDrawn', num);
-    saveStateAtomic();
+    if (typeof saveStateAtomic === 'function') {
+      saveStateAtomic();
+    } else {
+      console.error('saveStateAtomic is not a function!');
+    }
     console.log(`Host ${socket.id} drew number: ${num}`);
   });
 
@@ -96,11 +100,15 @@ io.on('connection', (socket) => {
       lastDrawn: null
     };
     io.emit('SYNC', gameState);
-    saveStateAtomic();
+    if (typeof saveStateAtomic === 'function') {
+      saveStateAtomic();
+    } else {
+      console.error('saveStateAtomic is not a function!');
+    }
     console.log(`Host ${socket.id} reset the game`);
   });
 });
 
 server.listen(PORT, () => {
-  console.log(`Bingo Server running on port ${PORT}`);
+  console.log(`Bingo Server running on port ${PORT} - PID: ${process.pid}`);
 });

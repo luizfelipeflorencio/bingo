@@ -37,13 +37,6 @@ function loadFromLocal() {
     }
 }
 
-// Version check for state sync
-function isStateNewer(newState, oldState) {
-    if (!oldState) return true;
-    // Simple version check: more numbers drawn = newer
-    return (newState.drawnNumbers || []).length >= (oldState.drawnNumbers || []).length;
-}
-
 // D-02: Grid Generation
 function generateGrid() {
     gridContainerEl.innerHTML = '';
@@ -104,11 +97,8 @@ socket.on('disconnect', () => {
 });
 
 socket.on('SYNC', (state) => {
-    const localState = loadFromLocal();
-    if (isStateNewer(state, localState)) {
-        renderState(state);
-        saveToLocal(state);
-    }
+    renderState(state);
+    saveToLocal(state);
 });
 
 socket.on('numberDrawn', (number) => {
