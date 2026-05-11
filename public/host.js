@@ -4,7 +4,8 @@ const key = urlParams.get('key');
 const socket = io({
     auth: {
         token: key
-    }
+    },
+    reconnection: true
 });
 
 const statusEl = document.getElementById('status');
@@ -13,6 +14,27 @@ const authIndicatorEl = document.getElementById('auth-indicator');
 const gameControlsEl = document.getElementById('game-controls');
 const numberPadEl = document.getElementById('number-pad');
 const resetBtn = document.getElementById('reset-btn');
+
+// LocalStorage Persistence
+const STORAGE_KEY = 'bingo_host_state';
+
+function saveToLocal(state) {
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    } catch (err) {
+        console.error('Failed to save host state:', err);
+    }
+}
+
+function loadFromLocal() {
+    try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        return saved ? JSON.parse(saved) : null;
+    } catch (err) {
+        console.error('Failed to load host state:', err);
+        return null;
+    }
+}
 
 // Generate number pad
 for (let i = 1; i <= 90; i++) {
@@ -28,6 +50,12 @@ for (let i = 1; i <= 90; i++) {
     numberPadEl.appendChild(btn);
 }
 
+// Initial Load from LocalStorage
+const localState = loadFromLocal();
+if (localState && localState.drawnNumbers) {
+    updateGrid(localState.drawnNumbers);
+}
+
 resetBtn.onclick = () => {
     if (window.confirm('Are you sure you want to reset the game? This will clear all drawn numbers for everyone.')) {
         socket.emit('resetGame');
@@ -38,10 +66,6 @@ socket.on('connect', () => {
     console.log('Connected to server');
     statusEl.textContent = 'Connected';
     statusEl.className = 'connected';
-
-    // We'll know if we're authenticated by whether the server accepts our host-only commands
-    // or we can emit a request for confirmation.
-    // For now, let's assume if we connect with a key, we're attempting host role.
     authIndicatorEl.textContent = 'Attempting host connection...';
 });
 
@@ -56,7 +80,6 @@ socket.on('connect_error', (err) => {
     statusEl.className = 'error';
 });
 
-// Listen for a custom 'authorized' event we'll add to server.js in a moment
 socket.on('authorized', (data) => {
     if (data.isHost) {
         authStatusEl.textContent = 'Authenticated as Host';
@@ -73,11 +96,19 @@ socket.on('authorized', (data) => {
 
 socket.on('SYNC', (state) => {
     updateGrid(state.drawnNumbers);
+    saveToLocal(state);
 });
 
 socket.on('numberDrawn', (num) => {
     const btn = document.getElementById(`num-${num}`);
     if (btn) btn.classList.add('drawn');
+
+    // Update local state
+    const state = loadFromLocal() || { drawnNumbers: [] };
+    if (!state.drawnNumbers.includes(num)) {
+        state.drawnNumbers.push(num);
+        saveToLocal(state);
+    }
 });
 
 function updateGrid(drawnNumbers) {

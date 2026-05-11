@@ -7,7 +7,8 @@ const socket = io({
 
 const statusEl = document.getElementById('status');
 const currentNumberEl = document.getElementById('current-number');
-const numbersListEl = document.getElementById('numbers-list');
+const gridContainerEl = document.getElementById('grid-container');
+const historyStripEl = document.getElementById('history-strip');
 
 // UI State handling
 function updateStatus(state) {
@@ -19,71 +20,128 @@ function updateStatus(state) {
 const STORAGE_KEY = 'bingo_game_state';
 
 function saveToLocal(state) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    } catch (err) {
+        console.error('Failed to save to local storage:', err);
+    }
 }
 
 function loadFromLocal() {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    return saved ? JSON.parse(saved) : null;
+    try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        return saved ? JSON.parse(saved) : null;
+    } catch (err) {
+        console.error('Failed to load from local storage:', err);
+        return null;
+    }
 }
 
-// Initial hydration (Optimistic UX)
+// Version check for state sync
+function isStateNewer(newState, oldState) {
+    if (!oldState) return true;
+    // Simple version check: more numbers drawn = newer
+    return (newState.drawnNumbers || []).length >= (oldState.drawnNumbers || []).length;
+}
+
+// D-02: Grid Generation
+function generateGrid() {
+    gridContainerEl.innerHTML = '';
+    for (let i = 1; i <= 90; i++) {
+        const cell = document.createElement('div');
+        cell.className = 'grid-cell';
+        cell.id = `cell-${i}`;
+        cell.textContent = i;
+        gridContainerEl.appendChild(cell);
+    }
+}
+
+// D-03: History Slicing (Latest 5 excluding current)
+function updateHistoryStrip(drawnNumbers) {
+    historyStripEl.innerHTML = '';
+    if (drawnNumbers.length <= 1) return;
+
+    // Get last 6 numbers, then take all but the very last one
+    const latest = drawnNumbers.slice(-6, -1).reverse();
+
+    latest.forEach(num => {
+        const item = document.createElement('div');
+        item.className = 'history-item';
+        item.textContent = num;
+        historyStripEl.appendChild(item);
+    });
+}
+
+// D-04: Pulse & Flash Trigger
+function triggerAnimation(number) {
+    const cell = document.getElementById(`cell-${number}`);
+
+    // Remove classes to re-trigger if needed
+    currentNumberEl.classList.remove('animate-pulse-flash');
+    if (cell) cell.classList.remove('animate-pulse-flash');
+
+    // Trigger reflow
+    void currentNumberEl.offsetWidth;
+
+    currentNumberEl.classList.add('animate-pulse-flash');
+    if (cell) cell.classList.add('animate-pulse-flash');
+}
+
+// Initial Setup
+generateGrid();
+
 const localState = loadFromLocal();
 if (localState) {
-    console.log('Hydrating from LocalStorage:', localState);
     renderState(localState);
 }
 
 socket.on('connect', () => {
-    console.log('Connected to server');
     updateStatus('Connected');
 });
 
-socket.on('disconnect', (reason) => {
-    console.log('Disconnected:', reason);
+socket.on('disconnect', () => {
     updateStatus('Disconnected (Reconnecting...)');
 });
 
-socket.on('connect_error', () => {
-    updateStatus('Connection Error');
-});
-
-// Pitfall 1 & 2: SYNC handle
 socket.on('SYNC', (state) => {
-    console.log('Received SYNC (Server Authority):', state);
-    renderState(state);
-    saveToLocal(state); // Unconditionally overwrite local cache
+    const localState = loadFromLocal();
+    if (isStateNewer(state, localState)) {
+        renderState(state);
+        saveToLocal(state);
+    }
 });
 
-// Real-time updates
 socket.on('numberDrawn', (number) => {
-    console.log('Number drawn:', number);
-    currentNumberEl.textContent = number;
+    const state = loadFromLocal() || { drawnNumbers: [], lastDrawn: null };
 
-    // Add to history if not present
-    const history = Array.from(document.querySelectorAll('.history-number')).map(el => parseInt(el.textContent));
-    if (!history.includes(number)) {
-        addNumberToHistory(number);
-
-        // Update local cache
-        const currentState = loadFromLocal() || { drawnNumbers: [], lastDrawn: null };
-        currentState.lastDrawn = number;
-        if (!currentState.drawnNumbers.includes(number)) {
-            currentState.drawnNumbers.push(number);
-        }
-        saveToLocal(currentState);
+    if (!state.drawnNumbers.includes(number)) {
+        state.drawnNumbers.push(number);
+        state.lastDrawn = number;
+        renderState(state);
+        saveToLocal(state);
+        triggerAnimation(number);
     }
 });
 
 function renderState(state) {
-    currentNumberEl.textContent = state.lastDrawn || '--';
-    numbersListEl.innerHTML = '';
-    state.drawnNumbers.forEach(num => addNumberToHistory(num));
+    // D-05: Empty State Handling
+    if (!state.lastDrawn && (!state.drawnNumbers || state.drawnNumbers.length === 0)) {
+        currentNumberEl.textContent = 'Waiting for game to start...';
+        currentNumberEl.classList.add('empty-state');
+    } else {
+        currentNumberEl.textContent = state.lastDrawn;
+        currentNumberEl.classList.remove('empty-state');
+    }
+
+    // Reset grid highlights
+    document.querySelectorAll('.grid-cell').forEach(cell => cell.classList.remove('drawn'));
+
+    // Apply highlights
+    state.drawnNumbers.forEach(num => {
+        const cell = document.getElementById(`cell-${num}`);
+        if (cell) cell.classList.add('drawn');
+    });
+
+    updateHistoryStrip(state.drawnNumbers);
 }
 
-function addNumberToHistory(num) {
-    const el = document.createElement('span');
-    el.className = 'history-number';
-    el.textContent = num;
-    numbersListEl.appendChild(el);
-}
