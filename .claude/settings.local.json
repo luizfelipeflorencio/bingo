@@ -48,7 +48,8 @@
       "WebFetch(domain:app.bingo.report)",
       "WebFetch(domain:bingo90.netlify.app)",
       "WebFetch(domain:www.bingo.mx)",
-      "Bash(gsd-sdk --version)"
+      "Bash(gsd-sdk --version)",
+      "Bash(npm install *)"
     ],
     "additionalDirectories": [
       "c:\\Users\\ffeli\\bingo"

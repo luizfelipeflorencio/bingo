@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
+const { createClient } = require('@supabase/supabase-js');
 const path = require('path');
 const fs = require('fs');
 const throttle = require('lodash.throttle');
@@ -13,7 +14,12 @@ const io = new Server(server, {
   pingTimeout: 5000,
 });
 
-const STATE_FILE = path.join(__dirname, 'gameState.json');
+// Supabase Configuration
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_KEY;
+const supabase = (supabaseUrl && supabaseKey && supabaseUrl !== 'SUA_URL_AQUI')
+  ? createClient(supabaseUrl, supabaseKey)
+  : null;
 
 // Game state (in-memory)
 let gameState = {
@@ -22,23 +28,61 @@ let gameState = {
 };
 
 // Load state on startup
-try {
-  if (fs.existsSync(STATE_FILE)) {
-    const data = fs.readFileSync(STATE_FILE, 'utf8');
-    gameState = JSON.parse(data);
-    console.log('Game state loaded from disk');
+async function loadState() {
+  if (supabase) {
+    try {
+      const { data, error } = await supabase
+        .from('bingo_state')
+        .select('state')
+        .eq('id', 1)
+        .single();
+
+      if (data) {
+        gameState = data.state;
+        console.log('Game state loaded from Supabase');
+      } else if (error && error.code !== 'PGRST116') { // PGRST116 is "no rows returned"
+        console.error('Error loading from Supabase:', error.message);
+      }
+    } catch (err) {
+      console.error('Failed to load state from Supabase:', err);
+    }
+  } else {
+    console.log('Supabase not configured, using local file');
+    const STATE_FILE = path.join(__dirname, 'gameState.json');
+    try {
+      if (fs.existsSync(STATE_FILE)) {
+        const data = fs.readFileSync(STATE_FILE, 'utf8');
+        gameState = JSON.parse(data);
+        console.log('Game state loaded from disk');
+      }
+    } catch (err) {
+      console.error('Failed to load state from disk:', err);
+    }
   }
-} catch (err) {
-  console.error('Failed to load state from disk:', err);
 }
 
-const saveStateAtomic = throttle(() => {
-  try {
-    const tempFile = `${STATE_FILE}.tmp`;
-    fs.writeFileSync(tempFile, JSON.stringify(gameState, null, 2));
-    fs.renameSync(tempFile, STATE_FILE);
-  } catch (err) {
-    console.error('Failed to save state to disk:', err);
+loadState();
+
+const saveStateAtomic = throttle(async () => {
+  if (supabase) {
+    try {
+      const { error } = await supabase
+        .from('bingo_state')
+        .upsert({ id: 1, state: gameState });
+
+      if (error) console.error('Failed to save to Supabase:', error.message);
+    } catch (err) {
+      console.error('Failed to save to Supabase:', err);
+    }
+  } else {
+    try {
+      const STATE_FILE = path.join(__dirname, 'gameState.json');
+      const tempFile = `${STATE_FILE}.tmp`;
+      fs.writeFileSync(tempFile, JSON.stringify(gameState, null, 2));
+      fs.renameSync(tempFile, STATE_FILE);
+    } catch (err) {
+      console.error('Failed to save state to disk:', err);
+    }
   }
 }, 1000);
 
