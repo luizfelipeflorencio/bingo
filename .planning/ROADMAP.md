@@ -48,7 +48,8 @@ Plans:
   1. Participant screen shows the most recent number in a prominent large display.
   2. A 1–90 grid highlights all numbers called so far.
   3. A history bar shows the last 5 numbers called in order.
-**Plans**: TBD
+**Plans**: 1 plan
+- [ ] 03-01-PLAN.md — Participant Display Overhaul & Animations
 **UI hint**: yes
 
 ### Phase 4: Resilience & UX Polish
@@ -67,6 +68,6 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation & Communication | 2/2 | Completed| 2026-05-10 |
-| 2. Host Control Interface | 2/2 | Complete   | 2026-05-10 |
-| 3. Visual Bingo Display | 0/0 | Not started | - |
+| 2. Host Control Interface | 2/2 | Completed   | 2026-05-10 |
+| 3. Visual Bingo Display | 0/1 | In Progress | - |
 | 4. Resilience & UX Polish | 0/0 | Not started | - |
