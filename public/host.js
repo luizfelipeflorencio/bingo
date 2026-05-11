@@ -9,11 +9,28 @@ const socket = io({
 });
 
 const statusEl = document.getElementById('status');
+const pingEl = document.getElementById('ping-value');
 const authStatusEl = document.getElementById('auth-status');
 const authIndicatorEl = document.getElementById('auth-indicator');
 const gameControlsEl = document.getElementById('game-controls');
 const numberPadEl = document.getElementById('number-pad');
 const resetBtn = document.getElementById('reset-btn');
+
+// Latency calculation
+let lastPingTime = 0;
+function startPingPong() {
+    setInterval(() => {
+        if (socket.connected) {
+            lastPingTime = Date.now();
+            socket.emit('PING');
+        }
+    }, 5000);
+}
+
+socket.on('PONG', () => {
+    const latency = Date.now() - lastPingTime;
+    if (pingEl) pingEl.textContent = `${latency}ms`;
+});
 
 // LocalStorage Persistence
 const STORAGE_KEY = 'bingo_host_state';
@@ -67,6 +84,7 @@ socket.on('connect', () => {
     statusEl.textContent = 'Conectado';
     statusEl.className = 'connected';
     authIndicatorEl.textContent = 'Tentando conexão de anfitrião...';
+    startPingPong();
 });
 
 socket.on('disconnect', () => {

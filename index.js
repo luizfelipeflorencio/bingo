@@ -74,6 +74,10 @@ io.on('connection', (socket) => {
     console.log(`User disconnected: ${socket.id}`);
   });
 
+  socket.on('PING', () => {
+    socket.emit('PONG');
+  });
+
   socket.on('drawNumber', (n) => {
     if (!socket.isHost) return;
 

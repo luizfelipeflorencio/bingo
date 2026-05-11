@@ -6,9 +6,26 @@ const socket = io({
 });
 
 const statusEl = document.getElementById('status');
+const pingEl = document.getElementById('ping-value');
 const currentNumberEl = document.getElementById('current-number');
 const gridContainerEl = document.getElementById('grid-container');
 const historyStripEl = document.getElementById('history-strip');
+
+// Latency calculation
+let lastPingTime = 0;
+function startPingPong() {
+    setInterval(() => {
+        if (socket.connected) {
+            lastPingTime = Date.now();
+            socket.emit('PING');
+        }
+    }, 5000);
+}
+
+socket.on('PONG', () => {
+    const latency = Date.now() - lastPingTime;
+    if (pingEl) pingEl.textContent = `${latency}ms`;
+});
 
 // UI State handling
 function updateStatus(state) {
@@ -95,6 +112,7 @@ if (localState) {
 
 socket.on('connect', () => {
     updateStatus('Connected');
+    startPingPong();
 });
 
 socket.on('disconnect', () => {
