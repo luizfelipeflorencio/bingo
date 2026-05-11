@@ -56,11 +56,14 @@ Plans:
 **Goal**: Ensure state persistence across refreshes and responsive design.
 **Mode:** mvp
 **Depends on**: Phase 3
-**Requirements**: SYNC-02
+**Requirements**: SYNC-02, D-01, D-03, D-04
 **Success Criteria** (what must be TRUE):
-  1. Refreshing the browser page does not lose the current highlights on the Bingo grid via LocalStorage cache.
-  2. The UI is fully usable on a mobile phone in portrait and landscape orientation.
-**Plans**: TBD
+  1. Server state survives process restart via file-based persistence (D-01).
+  2. Refreshing the browser page does not lose the current highlights via LocalStorage cache (SYNC-02).
+  3. Participant view scales from mobile to projector without layout breakage (D-03).
+  4. Host UI is optimized for mobile touch targets and safe areas (D-04).
+**Plans**: 1 plan
+- [ ] 04-01-PLAN.md — Persistence & Responsive Design Polish
 **UI hint**: yes
 
 ## Progress Table
@@ -70,4 +73,4 @@ Plans:
 | 1. Foundation & Communication | 2/2 | Completed| 2026-05-10 |
 | 2. Host Control Interface | 2/2 | Completed   | 2026-05-10 |
 | 3. Visual Bingo Display | 0/1 | In Progress | - |
-| 4. Resilience & UX Polish | 0/0 | Not started | - |
+| 4. Resilience & UX Polish | 0/1 | Not started | - |
