@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,20 +9,30 @@
 <body>
     <div id="app">
         <header>
-            <h1>Bingo Host Control</h1>
+            <h1>Controle do Bingo</h1>
             <div id="status-bar">
-                Status: <span id="status" class="connecting">Connecting...</span>
-                <span id="auth-status" class="unauthorized">Unauthorized</span>
+                <div class="status-badge">
+                    <span class="status-dot"></span>
+                    <span id="status" class="connecting">Conectando</span>
+                </div>
+                <div class="status-badge" style="margin-left: 0.5rem">
+                    <span id="auth-status" class="unauthorized">Sem Acesso</span>
+                </div>
             </div>
         </header>
 
         <main>
             <div id="host-controls">
-                <div id="auth-indicator">Checking authentication...</div>
-                <div id="game-controls" class="hidden">
-                    <button id="reset-btn" class="danger-btn">Reset Game</button>
-                    <div id="number-pad" class="number-grid">
-                        <!-- 1-90 buttons will be generated here -->
+                <div class="control-panel">
+                    <div id="auth-indicator">Verificando autenticação...</div>
+                    <div id="game-controls" class="hidden">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                            <h2 style="margin: 0; font-size: 0.9rem; font-family: var(--font-mono); color: var(--muted); letter-spacing: 1px;">PAINEL DE CONTROLE</h2>
+                            <button id="reset-btn" class="danger-btn">Reiniciar Jogo</button>
+                        </div>
+                        <div id="number-pad" class="number-grid">
+                            <!-- 1-90 buttons will be generated here -->
+                        </div>
                     </div>
                 </div>
             </div>

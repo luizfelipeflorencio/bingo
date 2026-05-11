@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,20 +9,25 @@
 <body>
     <div id="app">
         <header>
-            <h1>Bingo Live</h1>
+            <h1>Bingo ao Vivo</h1>
             <div id="status-bar">
-                Status: <span id="status" class="connecting">Connecting...</span>
+                <div class="status-badge">
+                    <span class="status-dot"></span>
+                    <span id="status" class="connecting">Conectando</span>
+                </div>
             </div>
         </header>
 
         <main>
             <div id="current-call-container">
-                <div id="current-number-label">Current Number</div>
-                <div id="current-number">--</div>
+                <div id="current-number-label">Bola Atual</div>
+                <div class="number-orb">
+                    <div id="current-number">--</div>
+                </div>
             </div>
 
             <div id="history-container">
-                <div id="history-label">Previous Calls</div>
+                <div id="history-label">Anteriores</div>
                 <div id="history-strip"></div>
             </div>
 

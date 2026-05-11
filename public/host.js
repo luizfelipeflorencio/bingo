@@ -57,39 +57,39 @@ if (localState && localState.drawnNumbers) {
 }
 
 resetBtn.onclick = () => {
-    if (window.confirm('Are you sure you want to reset the game? This will clear all drawn numbers for everyone.')) {
+    if (window.confirm('Tem certeza que deseja reiniciar o jogo? Isso limpará todos os números sorteados para todos.')) {
         socket.emit('resetGame');
     }
 };
 
 socket.on('connect', () => {
-    console.log('Connected to server');
-    statusEl.textContent = 'Connected';
+    console.log('Conectado ao servidor');
+    statusEl.textContent = 'Conectado';
     statusEl.className = 'connected';
-    authIndicatorEl.textContent = 'Attempting host connection...';
+    authIndicatorEl.textContent = 'Tentando conexão de anfitrião...';
 });
 
 socket.on('disconnect', () => {
-    statusEl.textContent = 'Disconnected';
+    statusEl.textContent = 'Desconectado';
     statusEl.className = 'disconnected';
 });
 
 socket.on('connect_error', (err) => {
-    console.error('Connection error:', err.message);
-    statusEl.textContent = 'Connection Error';
+    console.error('Erro de conexão:', err.message);
+    statusEl.textContent = 'Erro de Conexão';
     statusEl.className = 'error';
 });
 
 socket.on('authorized', (data) => {
     if (data.isHost) {
-        authStatusEl.textContent = 'Authenticated as Host';
+        authStatusEl.textContent = 'ANFITRIÃO';
         authStatusEl.className = 'authorized';
         authIndicatorEl.classList.add('hidden');
         gameControlsEl.classList.remove('hidden');
     } else {
-        authStatusEl.textContent = 'Unauthorized';
+        authStatusEl.textContent = 'NEGADO';
         authStatusEl.className = 'unauthorized';
-        authIndicatorEl.textContent = 'Unauthorized: Invalid Key';
+        authIndicatorEl.textContent = 'Não autorizado: Chave Inválida';
         gameControlsEl.classList.add('hidden');
     }
 });

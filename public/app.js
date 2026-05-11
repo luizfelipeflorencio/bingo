@@ -12,7 +12,11 @@ const historyStripEl = document.getElementById('history-strip');
 
 // UI State handling
 function updateStatus(state) {
-    statusEl.textContent = state;
+    let ptState = state;
+    if (state === 'Connected') ptState = 'Conectado';
+    if (state === 'Disconnected (Reconnecting...)') ptState = 'Desconectado (Reconectando...)';
+
+    statusEl.textContent = ptState;
     statusEl.className = state.toLowerCase().split(' ')[0];
 }
 
@@ -23,7 +27,7 @@ function saveToLocal(state) {
     try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     } catch (err) {
-        console.error('Failed to save to local storage:', err);
+        console.error('Falha ao salvar no armazenamento local:', err);
     }
 }
 
@@ -32,7 +36,7 @@ function loadFromLocal() {
         const saved = localStorage.getItem(STORAGE_KEY);
         return saved ? JSON.parse(saved) : null;
     } catch (err) {
-        console.error('Failed to load from local storage:', err);
+        console.error('Falha ao carregar do armazenamento local:', err);
         return null;
     }
 }
@@ -68,16 +72,17 @@ function updateHistoryStrip(drawnNumbers) {
 // D-04: Pulse & Flash Trigger
 function triggerAnimation(number) {
     const cell = document.getElementById(`cell-${number}`);
+    const orb = document.querySelector('.number-orb');
 
-    // Remove classes to re-trigger if needed
-    currentNumberEl.classList.remove('animate-pulse-flash');
-    if (cell) cell.classList.remove('animate-pulse-flash');
+    // Remove classes to re-trigger
+    orb.classList.remove('animate-draw');
+    if (cell) cell.classList.remove('animate-draw');
 
     // Trigger reflow
-    void currentNumberEl.offsetWidth;
+    void orb.offsetWidth;
 
-    currentNumberEl.classList.add('animate-pulse-flash');
-    if (cell) cell.classList.add('animate-pulse-flash');
+    orb.classList.add('animate-draw');
+    if (cell) cell.classList.add('animate-draw');
 }
 
 // Initial Setup
@@ -116,7 +121,7 @@ socket.on('numberDrawn', (number) => {
 function renderState(state) {
     // D-05: Empty State Handling
     if (!state.lastDrawn && (!state.drawnNumbers || state.drawnNumbers.length === 0)) {
-        currentNumberEl.textContent = 'Waiting for game to start...';
+        currentNumberEl.textContent = 'AGUARDANDO';
         currentNumberEl.classList.add('empty-state');
     } else {
         currentNumberEl.textContent = state.lastDrawn;
