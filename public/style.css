@@ -1,74 +1,192 @@
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background-color: #f0f2f5;
+    background-color: #1a1a1a; /* Dark background for high contrast */
+    color: white;
     margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    overflow: hidden; /* Fix for projector display */
+    height: 100vh;
+    touch-action: manipulation;
+}
+
+button {
+    touch-action: manipulation;
 }
 
 #app {
-    background: white;
-    padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    width: 95%;
-    max-width: 800px;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    padding: 0;
+}
+
+header {
+    background: #2d2d2d;
+    padding: 0.5rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #444;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.2rem;
 }
 
 #status-bar {
-    margin-bottom: 1rem;
-    font-size: 0.9rem;
-    color: #666;
-    display: flex;
-    justify-content: space-between;
-    padding: 0.5rem 1rem;
-    background: #f8f9fa;
-    border-radius: 8px;
+    font-size: 0.8rem;
+    color: #aaa;
 }
 
-#status.connected { color: #28a745; font-weight: bold; }
+#status.connected { color: #28a745; }
 #status.connecting { color: #ffc107; }
 #status.disconnected { color: #dc3545; }
 
-.hidden { display: none !important; }
-
-.number-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(45px, 1fr));
-    gap: 8px;
-    margin-top: 2rem;
-    padding: 10px;
-    background: #f8f9fa;
-    border-radius: 12px;
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
-.num-btn {
-    aspect-ratio: 1;
-    border: 2px solid #dee2e6;
-    background: white;
-    border-radius: 8px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
+/* D-01: Top Heavy Huge Display */
+#current-call-container {
+    height: 40vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #000;
+    border-bottom: 4px solid #333;
+}
+
+#current-number-label {
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    color: #888;
+    letter-spacing: 2px;
+}
+
+#current-number {
+    font-size: min(25vh, 40vw); /* Aspect-ratio based scaling */
+    font-weight: 900;
+    color: #007bff;
+    line-height: 1;
+}
+
+/* D-03: History Strip */
+#history-container {
+    background: #222;
+    padding: 0.5rem;
+    border-bottom: 1px solid #333;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+#history-label {
+    font-size: 0.8rem;
+    color: #666;
+    white-space: nowrap;
+}
+
+#history-strip {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+}
+
+.history-item {
+    background: #444;
+    color: #fff;
+    width: 2.5rem;
+    height: 2.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
+    border-radius: 50%;
+    font-weight: bold;
+    font-size: 1.1rem;
 }
 
-.num-btn:hover {
-    border-color: #007bff;
-    color: #007bff;
+/* D-02: 1-90 Grid */
+#grid-container {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 4px;
+    padding: 8px;
+    background: #111;
+}
+
+.grid-cell {
+    background: #222;
+    border: 1px solid #333;
+    color: #444; /* Dimmed state (D-05) */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.5vw;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.grid-cell.drawn {
+    background: #007bff;
+    color: white;
+    border-color: #0056b3;
+}
+
+/* D-04: Pulse & Flash Animation */
+@keyframes pulse-flash {
+    0% { transform: scale(1); background-color: #007bff; }
+    50% { transform: scale(1.1); background-color: #ffeb3b; color: #000; }
+    100% { transform: scale(1); background-color: #007bff; }
+}
+
+.animate-pulse-flash {
+    animation: pulse-flash 0.8s ease-out;
+    z-index: 10;
+}
+
+.empty-state {
+    font-size: 4vh !important;
+    color: #555 !important;
+    text-align: center;
+    padding: 0 1rem;
+}
+
+/* Host specific styles */
+#host-controls {
+    padding: 1rem;
+    overflow-y: auto;
+}
+
+.number-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(44px, 1fr));
+    gap: 8px;
+    margin-top: 1rem;
+}
+
+.num-btn {
+    min-height: 44px; /* Minimum touch target size (Task 3) */
+    min-width: 44px;
+    background: #444;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
 }
 
 .num-btn.drawn {
     background: #007bff;
-    color: white;
-    border-color: #0056b3;
-    cursor: default;
+    cursor: not-allowed;
+    opacity: 0.5;
 }
 
 .danger-btn {
@@ -76,41 +194,21 @@ body {
     color: white;
     border: none;
     padding: 0.8rem 1.5rem;
-    border-radius: 8px;
+    border-radius: 4px;
     font-weight: bold;
     cursor: pointer;
     margin-bottom: 1rem;
 }
 
-.danger-btn:hover {
-    background: #bd2130;
+.hidden {
+    display: none !important;
 }
 
-@media (max-width: 480px) {
-    #app { padding: 1rem; }
-    .number-grid { grid-template-columns: repeat(auto-fill, minmax(35px, 1fr)); gap: 4px; }
-    .num-btn { font-size: 0.9rem; }
+.authorized { color: #28a745; }
+.unauthorized { color: #dc3545; }
+
+@media (max-width: 768px) {
+    .grid-cell { font-size: 3vw; }
+    #current-number { font-size: min(20vh, 40vw); }
 }
 
-#current-number {
-    font-size: 5rem;
-    font-weight: bold;
-    color: #007bff;
-    margin: 1rem 0;
-    min-height: 1.2em;
-}
-
-#numbers-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    justify-content: center;
-    margin-top: 1rem;
-}
-
-.history-number {
-    background: #e9ecef;
-    padding: 0.25rem 0.5rem;
-    border-radius: 4px;
-    font-size: 0.8rem;
-}
