@@ -5,7 +5,7 @@
 - [x] **Phase 1: Foundation & Real-time Communication** - Establish the basic server-client link for live updates.
 - [x] **Phase 2: Host Control Interface** - Implement the host's ability to manage the game and push numbers. (completed 2026-05-10)
 - [ ] **Phase 3: Visual Bingo Display** - Create the comprehensive display for participants with history and state replay.
-- [ ] **Phase 4: Resilience & UX Polish** - Ensure state persistence across refreshes and responsive design.
+- [x] **Phase 4: Resilience & UX Polish** - Ensure state persistence across refreshes and responsive design. (completed 2026-05-11)
 
 ## Phase Details
 
@@ -63,7 +63,7 @@ Plans:
   3. Participant view scales from mobile to projector without layout breakage (D-03).
   4. Host UI is optimized for mobile touch targets and safe areas (D-04).
 **Plans**: 1 plan
-- [ ] 04-01-PLAN.md — Persistence & Responsive Design Polish
+- [x] 04-01-PLAN.md — Persistence & Responsive Design Polish
 **UI hint**: yes
 
 ## Progress Table
@@ -73,4 +73,4 @@ Plans:
 | 1. Foundation & Communication | 2/2 | Completed| 2026-05-10 |
 | 2. Host Control Interface | 2/2 | Completed   | 2026-05-10 |
 | 3. Visual Bingo Display | 0/1 | In Progress | - |
-| 4. Resilience & UX Polish | 0/1 | Not started | - |
+| 4. Resilience & UX Polish | 1/1 | Complete   | 2026-05-11 |
